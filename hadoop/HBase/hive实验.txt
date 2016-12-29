@@ -1,0 +1,28 @@
+hive
+show databases;
+create database access_log;
+
+describe database access_log;
+
+use access_log;
+
+create table access(time STRING,
+                    userid STRING,
+                    serverIP STRING,
+                    hostName STRING,
+                    spName STRING,
+                    upload INT,
+                    download INT) row format delimited fields terminated by '\t';
+                    
+load data inpath '/user/fangcheng/access.log' overwrite into table access;
+
+describe access;
+
+
+统计每个userid访问spname的总流量
+
+select userid, spname, sum(upload + download) from access group by userid, spname;
+
+统计每个userid访问spname的次数
+
+select userid, spname, count(*) from access group by userid, spname;

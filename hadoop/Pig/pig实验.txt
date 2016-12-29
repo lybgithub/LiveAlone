@@ -1,0 +1,159 @@
+pig -> 集群模式
+pig -x local ->本地模式
+
+
+**wordcount example**
+
+/user/hadooptest/word.txt
+
+each_line = load '/user/fangcheng/word.txt' as line;
+dump each_line;
+each_word = foreach each_line generate flatten(TOKENIZE((chararray)line)) as word;
+dump each_word;
+group_word = group each_word by word;
+describe group_word;
+dump group_word;
+
+wordcount = foreach group_word generate COUNT(each_word), group;
+
+store wordcount into '/user/fangcheng/pigwordcount';
+
+**sort,group,join等操作**
+LOAD:
+records = LOAD '/user/yanbiao/access.log' AS (time:chararray,userId:chararray,ip:chararray, host:chararray, sp:chararray, Up:int,Down:int);
+describe records;
+lmt = limit records 10;
+dump lmt(限制输出的行数)
+dump records;
+
+Filter:
+只选取host包含qq的记录:
+filter_records = FILTER records BY sp MATCHES '.*qq.*';
+describe filter_records;
+dump filter_records;
+
+Order(排序):
+按IP排序:
+order_records = ORDER filter_records BY ip;
+describe order_records;
+dump order_records;
+
+Group:
+group_records = GROUP order_records BY ip;
+describe group_records;
+dump group_records;
+
+FOREACH(循环处理):
+count_records = FOREACH group_records GENERATE group, COUNT(order_records.ip) as count,
+SUM(order_records.Up) as sumTraffic;
+describe count_records;
+dump count_records;
+
+Join(联结)：
+join_records = JOIN order_records BY ip, count_records BY group;
+describe join_records;
+dump join_records;
+
+Result:
+end_records = FOREACH join_records GENERATE order_records::ip, count_records::count, order_records::host,
+order_records::sp, order_records::traffic, (double)order_records::traffic/(double)count_records::sumTraffic as percent:double;
+describe end_records;
+dump end_records;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**accesslog example**分别统计每个用户访问QQ的上下行流量
+
+/user/hadooptest/pig/access.log
+
+
+/home/hadooptest/access.log
+
+###1.### records = load '/user/fangcheng/pig/access.log'  as (time:chararray,userID:chararray,serverIP:chararray, hostName:chararray, spName:chararray, uptraffic:int,downtraffic:int);
+本地records = load '/home/fangcheng/pigtest/access.log'  as (time:chararray,userID:chararray,serverIP:chararray, hostName:chararray, spName:chararray, uptraffic:int,downtraffic:int);
+describe records
+
+dump records
+
+X = SAMPLE records 0.001;
+dump X
+explain records
+
+
+###2.### filter_records = FILTER records BY spName MATCHES '.*qq.*';
+describe filter_records
+dump filter_records
+explain filter_records
+
+###3.### order_records = ORDER filter_records BY userID;
+describe order_records
+dump order_records
+
+###4.### group_records = group order_records by userID;
+describe group_records
+dump group_records
+
+###5.### count_records = FOREACH group_records GENERATE group, COUNT(order_records.serverIP) as count, SUM(order_records.uptraffic) as sumUpTraffic,SUM(order_records.downtraffic) as sumDownTraffic;
+describe count_records
+dump count_records
+
+explain count_records
+
+
+
+
+
+
+
+
+
