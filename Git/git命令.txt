@@ -57,7 +57,8 @@ git push -u origin master			推送的远程仓库的某一个分支
 git pull origin master				从远程仓库origin（在关联仓库的时候设置的）的master分支上把所有的东西拉下来
 git branch -r -d origin/branch-name
 git push origin :branch-name
-
+git branch -d localBranch        	删除本地分支
+建立远程分支的话，可以先建立一个新的本地分支，然后git push origin localBranch,就会自动在远程生成对应的分支
 
 
 如果在本地建立一个新的文件夹，那么文件夹里面至少有一个txt，不然不能git push之后远程仓库中也有对应的folder
@@ -67,5 +68,8 @@ git push origin :branch-name
 2、想要把本地的东西推到远端的分支，需要先add、commit到本地的仓库之后，再git push到远端对应的分支
 3、如果想把本地另一个的分支的更新也添加到自己的分支：这时候一定要在你自己的分支上先commit之后，再执行merge操作，不然如果直接执行merge操作，会使自己原来分支上的东西不被保存！
 4、在A分支上创建一个新的分支B，这时候，B分支上的内容和A分支上的内容是一致同步的
+
+git checkout branch:在这个分支上进行代码的修改，并且commit之后，会在这个版本库里面独有，也就是再checkout到其他的分支，之前commit的东西会没有
+git checkout -b branchName:这个分支的版本库会和当前分支的完全一样
 
 
