@@ -72,4 +72,15 @@ git branch -d localBranch        	删除本地分支
 git checkout branch:在这个分支上进行代码的修改，并且commit之后，会在这个版本库里面独有，也就是再checkout到其他的分支，之前commit的东西会没有
 git checkout -b branchName:这个分支的版本库会和当前分支的完全一样
 
+把远程的最新版本库，覆盖自己本地分支的版本库：
+1、git pull:把远程所有分支拉到本地的对应分支（这种不指明远程分支的模式，可以把所有的远程分支自动在本地建立关联分支）
+2、git branch -a：查看所有分支
+3、git checkout master:切换到最新版本对应的分支
+4、git branch -d lyb:把之前的分支删掉
+5、git checkout -b lyb:从最新的master分支复制出来lyb分支，完成分支内容的覆盖。
+之所以需要上面的操作是因为：如果直接merge，有的时候会有conflict，也就是说，你本地的当前分支，会有最新分支上没有的内容，也就导致不能进行合并！
+
+git push之前切记要git commit一下！！不然的话还是没有修改！
+
+
 
