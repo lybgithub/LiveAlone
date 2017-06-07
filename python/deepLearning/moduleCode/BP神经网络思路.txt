@@ -1,0 +1,26 @@
+1.真实数据的读取，x,y都处理成array形式
+2.tf部分:
+	a.定义X_placeholder,Y_placeholder 
+	b.create network then use the network and X_placeholder get the y_hat,so the y_hat is also placeholder,if you want to get it later,you should also give the feed_dict. 
+	c.定义loss和optimizer(or called train_step)
+	d.如果之前有checkpoint,reload之前的checkpoint
+	e.打开一个session：
+		设置迭代次数开始训练 -> sess.run([train_step,y_hat,loss],feed_dict)
+				     -> 上面列表中的tensor变量都含有placeholder
+				     -> 上面的y_hat和loss都是不断进行更新的
+	f.训练结束后，保存checkpoint
+
+ps：一般代码部分需要增加参数部分：
+
+parser = argparseArgumentParser()
+parser.add_argument()
+
+参数一般包括：
+1.checkpoint的存储地址
+2.batch_size
+3.save_checkpoint_steps
+4.eval_the_performance_steps
+5.activate_fun
+6.net_unit
+7.learning_rate
+
