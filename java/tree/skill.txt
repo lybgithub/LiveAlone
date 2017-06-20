@@ -1,0 +1,28 @@
+关于树递归的一点套路：
+
+1.一般类似于使用后序遍历，也就是LRN：
+
+if(root==null) return 0;
+...
+<T> left = recurrent(root.left)    
+<T> right = recurrent(root.right)
+
+## 其实这里最后是到最下面的叶节点之后往上把左右得到的值给他们的父节点，先一下子到达树的最左下面，然后和对应的最左下面的兄弟节点，一起做一个operation，然后return的东西就给了最左下面节点的父节点！
+....some operation
+return operation(left,right)
+
+2.可能会直接定义两个函数，第一个函数里面就递归调用第二个函数里面的东西。
+eg：
+fun one(root):
+if(root==null) return 0
+two(root)
+
+fun two(root):
+if(root==null)
+....
+参考上面的1
+
+
+
+
+
